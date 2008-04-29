@@ -1,0 +1,18 @@
+<assembly>
+  <id></id>
+  <formats>
+    <format>zip</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>./src/bin</directory> 
+      <outputDirectory>/</outputDirectory>           
+    </fileSet>
+    <fileSet>
+      <directory>.</directory>
+      <outputDirectory>/jsw-license</outputDirectory>
+      <includes><include>LICENSE.txt</include></includes>
+    </fileSet>
+  </fileSets>        
+</assembly>
