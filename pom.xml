@@ -24,14 +24,14 @@ under the License.
   </parent>
   <groupId>org.sonatype.jsw-binaries</groupId>
   <artifactId>jsw-binaries</artifactId>
-  <version>3.2.3</version>
+  <version>3.2.4-SNAPSHOT</version>
   <name>Java Service Wrapper Binary Files</name>
 	<packaging>pom</packaging>
     
     <scm>
-        <connection>scm:svn:http://svn.sonatype.org/spice/tags/jsw-binaries-3.2.3</connection>
-        <url>http://svn.sonatype.org/spice/tags/jsw-binaries-3.2.3</url>
-        <developerConnection>scm:svn:https://svn.sonatype.org/spice/tags/jsw-binaries-3.2.3</developerConnection>
+        <connection>scm:svn:http://svn.sonatype.org/spice/trunk/jsw-binaries</connection>
+        <url>http://svn.sonatype.org/spice/trunk/jsw-binaries</url>
+        <developerConnection>scm:svn:https://svn.sonatype.org/spice/trunk/jsw-binaries</developerConnection>
     </scm>
     
 	<build>
