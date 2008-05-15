@@ -136,7 +136,7 @@ pid=""
 PSEXE="/usr/bin/ps"
 if [ ! -x "$PSEXE" ]
 then
-    PSEXE="/bin/ps -ww"
+    PSEXE="/bin/ps"
     if [ ! -x "$PSEXE" ]
     then
         echo "Unable to locate 'ps'."
