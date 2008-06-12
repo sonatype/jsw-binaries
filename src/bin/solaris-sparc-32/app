@@ -150,6 +150,7 @@ DIST_OS=`uname -s | tr [:upper:] [:lower:] | tr -d [:blank:]`
 case "$DIST_OS" in
     'sunos')
         DIST_OS="solaris"
+        PSEXE="/usr/ucb/ps"
         ;;
     'hp-ux' | 'hp-ux64')
         DIST_OS="hpux"
@@ -366,7 +367,12 @@ getpid() {
                 #  common is during system startup after an unclean shutdown.
                 # The ps statement below looks for the specific wrapper command running as
                 #  the pid.  If it is not found then the pid file is considered to be stale.
-                pidtest=`$PSEXE -p $pid -o args | grep "$WRAPPER_CMD" | tail -1`
+                if [ "$DIST_OS" = "solaris" ]
+                then
+                    pidtest=`$PSEXE ww $pid | grep "$WRAPPER_CMD" | tail -1`
+                else
+                    pidtest=`$PSEXE -p $pid -o args | grep "$WRAPPER_CMD" | tail -1`
+                fi                
                 if [ "X$pidtest" = "X" ]
                 then
                     # This is a stale pid file.
@@ -383,7 +389,12 @@ getpid() {
 }
 
 testpid() {
-    pid=`$PSEXE -p $pid | grep $pid | grep -v grep | awk '{print $1}' | tail -1`
+    if [ "$DIST_OS" = "solaris" ]
+    then
+        pid=`$PSEXE ww $pid | grep $pid | grep -v grep | awk '{print $1}' | tail -1`
+    else
+        pid=`$PSEXE -p $pid | grep $pid | grep -v grep | awk '{print $1}' | tail -1`
+    fi
     if [ "X$pid" = "X" ]
     then
         # Process is gone so remove the pid file.
