@@ -14,17 +14,39 @@ software distributed under the License is distributed on an
 KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
+
+wrapper-linux-ppc-64
+wrapper-linux-x86-32
+wrapper-linux-x86-64
+wrapper-macosx-universal-32
+wrapper-solaris-sparc-32
+wrapper-solaris-sparc-64
+wrapper-solaris-x86-32
+wrapper-windows-x86-32
+
 -->
 <assembly>
   <id></id>
   <formats>
-    <format>zip</format>
+    <format>tar.gz</format>
   </formats>
   <includeBaseDirectory>false</includeBaseDirectory>
   <fileSets>
     <fileSet>
       <directory>./src/bin</directory> 
-      <outputDirectory>/</outputDirectory>           
+      <outputDirectory>/</outputDirectory>      
+      <excludes>
+        <exclude>**/wrapper</exclude>
+        <exclude>**/app</exclude>
+      </excludes>     
+    </fileSet>
+    <fileSet>
+      <directory>./src/bin</directory> 
+      <outputDirectory>/</outputDirectory>      
+      <includes>
+        <include>**/wrapper</include>
+      </includes>
+      <fileMode>0755</fileMode>     
     </fileSet>
     <fileSet>
       <directory>.</directory>
