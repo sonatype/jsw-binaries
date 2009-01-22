@@ -425,6 +425,13 @@ start() {
         echo "$APP_LONG_NAME is already running."
         exit 1
     fi
+    getpid
+    if [ "X$pid" != "X" ]
+    then
+        echo "Started $APP_LONG_NAME."
+    else
+        echo "Failed to start $APP_LONG_NAME."
+    fi    
 }
  
 stopit() {
