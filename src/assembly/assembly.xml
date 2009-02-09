@@ -45,6 +45,7 @@ wrapper-windows-x86-32
       <outputDirectory>/</outputDirectory>      
       <includes>
         <include>**/wrapper</include>
+        <include>**/app</include>
       </includes>
       <fileMode>0755</fileMode>     
     </fileSet>
