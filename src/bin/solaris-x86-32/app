@@ -45,7 +45,7 @@ PIDDIR="."
 # NOTE - This will set the user which is used to run the Wrapper as well as
 #  the JVM and is not useful in situations where a privileged resource or
 #  port needs to be allocated prior to the user being changed.
-#RUN_AS_USER=
+#RUN_AS_USER=nexus
 
 # The following two lines are used by the chkconfig command. Change as is
 #  appropriate for your application.  They should remain commented.
@@ -333,7 +333,7 @@ checkUser() {
 
         # Still want to change users, recurse.  This means that the user will only be
         #  prompted for a password once. Variables shifted by 1
-        su -m $RUN_AS_USER -c "\"$REALPATH\" $2"
+        sudo -u $RUN_AS_USER "$REALPATH" "$2"
 
         # Now that we are the original user again, we may need to clean up the lock file.
         if [ "X$LOCKPROP" != "X" ]
@@ -366,7 +366,27 @@ getpid() {
                 #  common is during system startup after an unclean shutdown.
                 # The ps statement below looks for the specific wrapper command running as
                 #  the pid.  If it is not found then the pid file is considered to be stale.
-                pidtest=`$PSEXE -p $pid -o args | grep "$WRAPPER_CMD" | tail -1`
+
+                dir=`echo ${WRAPPER_CMD:0:60}`
+                #echo "searching for $dir in command args for PID verification..."
+
+                #echo "args for PID: ${pid}:"
+                #echo `$PSEXE -p $pid -o args`
+
+                #echo `$PSEXE -p $pid -o args | grep "$dir"`
+                pidtest=`$PSEXE -p $pid -o args | grep "$dir" | tail -1`
+                if [ "X$pidtest" = "X" ]
+                then
+                #    echo "Finding parent of $pid: $PSEXE -p $pid | grep $pid | awk '{print $3}'"
+                    parent_pid=`$PSEXE -p $pid -f | grep $pid | awk '{print $3}'`
+                #    echo "Parent PID: $parent_pid"
+
+                #    echo "args for PID: ${parent_pid}:"
+                #    echo `$PSEXE -p $parent_pid -o args`
+
+                    pidtest=`$PSEXE -p $parent_pid -o args | grep "$dir" | tail -1`
+                fi
+
                 if [ "X$pidtest" = "X" ]
                 then
                     # This is a stale pid file.
@@ -418,13 +438,6 @@ start() {
         echo "$APP_LONG_NAME is already running."
         exit 1
     fi
-    getpid
-    if [ "X$pid" != "X" ]
-    then
-        echo "Started $APP_LONG_NAME."
-    else
-        echo "Failed to start $APP_LONG_NAME."
-    fi    
 }
  
 stopit() {
